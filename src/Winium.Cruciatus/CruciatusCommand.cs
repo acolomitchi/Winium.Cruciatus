@@ -78,6 +78,12 @@
                 return false;
             }
 
+            string msg = string.Format(
+                "{0} on '{1}' element at ({2}, {3}) BoundingRectangle center",
+                doubleClick ? "DoubleClick" : "Click",
+                element,
+                point.X,
+                point.Y);
             if (doubleClick)
             {
                 CruciatusFactory.Mouse.DoubleClick(button, point.X, point.Y);
@@ -87,12 +93,7 @@
                 CruciatusFactory.Mouse.Click(button, point.X, point.Y);
             }
 
-            Logger.Info(
-                "{0} on '{1}' element at ({2}, {3}) BoundingRectangle center", 
-                doubleClick ? "DoubleClick" : "Click", 
-                element, 
-                point.X, 
-                point.Y);
+            Logger.Info(msg);
             return true;
         }
 
@@ -112,6 +113,12 @@
 
             var x = point.Value.X;
             var y = point.Value.Y;
+            string msg = string.Format(
+                "{0} on '{1}' element at ({2}, {3}) ClickablePoint",
+                doubleClick ? "DoubleClick" : "Click",
+                element,
+                x,
+                y);
             if (doubleClick)
             {
                 CruciatusFactory.Mouse.DoubleClick(button, x, y);
@@ -121,12 +128,7 @@
                 CruciatusFactory.Mouse.Click(button, x, y);
             }
 
-            Logger.Info(
-                "{0} on '{1}' element at ({2}, {3}) ClickablePoint", 
-                doubleClick ? "DoubleClick" : "Click", 
-                element, 
-                x, 
-                y);
+            Logger.Info(msg);
             return true;
         }
 
@@ -140,21 +142,20 @@
             object basePattern;
             if (element.Instance.TryGetCurrentPattern(InvokePattern.Pattern, out basePattern))
             {
-                string cmd;
+                string cmd = doubleClick ? "DoubleClick" : "Click";
+                string msg = string.Format("{0} emulation on '{1}' element with use invoke pattern",cmd, element);
                 var invokePattern = (InvokePattern)basePattern;
                 if (doubleClick)
                 {
                     invokePattern.Invoke();
                     invokePattern.Invoke();
-                    cmd = "DoubleClick";
                 }
                 else
                 {
                     invokePattern.Invoke();
-                    cmd = "Click";
                 }
 
-                Logger.Info("{0} emulation on '{1}' element with use invoke pattern", cmd, element);
+                Logger.Info(msg);
                 return true;
             }
 
